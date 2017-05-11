@@ -21,8 +21,11 @@ var path = require('path');
 var ibmdb = require('ibm_db');
 require('cf-deployment-tracker-client').track();
 
-
+var cors = require('cors')
 var app = express();
+
+app.use(cors())
+
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -67,9 +70,14 @@ if ( hasConnect == false ) {
 
 var connString = "DRIVER={DB2};DATABASE=" + db2.db + ";UID=" + db2.username + ";PWD=" + db2.password + ";HOSTNAME=" + db2.hostname + ";port=" + db2.port;
 
-app.get('/', routes.listSysTables(ibmdb,connString));
+//app.get('/', routes.listSysTables(ibmdb,connString));
 
-app.get('/api/v1/engines/customers', function(req, res){
+app.get('/', function (req, res, next) {
+  res.json({msg: 'This is CORS-enabled for all origins!'})
+})
+
+
+app.get('/api/v1/engines/customers', function(req, res, next){
   ibmdb.open(connString, function(err, conn){
     if(err){
       console.error("Error: ", err);
@@ -91,7 +99,7 @@ app.get('/api/v1/engines/customers', function(req, res){
   });
 });
 
-app.get('/api/v1/engines/damage_per_flight', function(req, res){
+app.get('/api/v1/engines/damage_per_flight', function(req, res, next){
   ibmdb.open(connString, function(err, conn){
     if(err){
       console.error("Error: ", err);
@@ -113,7 +121,7 @@ app.get('/api/v1/engines/damage_per_flight', function(req, res){
   });
 });
 
-app.get('/api/v1/engines/ex50b/core_speed', function(req, res){
+app.get('/api/v1/engines/ex50b/core_speed', function(req, res, next){
   ibmdb.open(connString, function(err, conn){
     if(err){
       console.error("Error: ", err);
@@ -135,7 +143,7 @@ app.get('/api/v1/engines/ex50b/core_speed', function(req, res){
   });
 });
 
-app.get('/api/v1/prosa/comercios', function(req, res){
+app.get('/api/v1/prosa/comercios', function(req, res, next){
   ibmdb.open(connString, function(err, conn){
     if(err){
       console.error("Error: ", err);
@@ -157,7 +165,7 @@ app.get('/api/v1/prosa/comercios', function(req, res){
   });
 });
 
-app.get('/api/v1/prosa/comercios/importe_promedio', function(req, res){
+app.get('/api/v1/prosa/comercios/importe_promedio', function(req, res, next){
   ibmdb.open(connString, function(err, conn){
     if(err){
       console.error("Error: ", err);
@@ -179,7 +187,7 @@ app.get('/api/v1/prosa/comercios/importe_promedio', function(req, res){
   });
 });
 
-app.get('/api/v1/prosa/comercios/resumen', function(req, res){
+app.get('/api/v1/prosa/comercios/resumen', function(req, res, next){
   ibmdb.open(connString, function(err, conn){
     if(err){
       console.error("Error: ", err);
@@ -201,7 +209,7 @@ app.get('/api/v1/prosa/comercios/resumen', function(req, res){
   });
 });
 
-app.get('/api/v1/prosa/topten/comercios_mas_ventas', function(req, res){
+app.get('/api/v1/prosa/topten/comercios_mas_ventas', function(req, res, next){
   ibmdb.open(connString, function(err, conn){
     if(err){
       console.error("Error: ", err);
