@@ -1,6 +1,6 @@
-# dashDB NodeJS HelloWorld Sample
+# dashDB NodeJS API Project
 
-dashdb-nodejs-helloworld is a simple implementation of an app running on Node.js runtime demonstrating how to connect Node.js applications to dashDB service on Bluemix.
+dashdb-api is a simple implementation of an app running on Node.js runtime demonstrating how to connect Node.js applications to dashDB service on Bluemix and export endpoints.
 
 You can bind a dashDB service instance to an app running on Node.js runtime in Bluemix and then work with the data in the dashDB database. The Bluemix Node.js runtime will automatically lay down native driver dependencies when you have a dashDB Service instance bound to your app. The sample illustrated here uses express and jade node modules.
 
@@ -9,6 +9,64 @@ For issues that you encounter with this service, go to [**Get help**](https://de
 [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy)
 
 ![Bluemix Deployments](https://deployment-tracker.mybluemix.net/stats/6dc62259729f4ccc57f616d7f1e7315b/badge.svg)
+
+
+API
+===
+
+All responses (including errors) are returned in JSON format.
+
+
+`GET /`
+-------
+**API Version**
+
+###### Response
+
+`Status: 200`
+```json
+[
+  "api_version": "1",
+]
+```
+
+`GET /api/v1/engines/customers`
+------------------------------
+**Show flights for customers**
+
+###### Response
+
+```json
+[
+  {"CUSTOMER":"FAR","TOTAL":"390563"},
+  ...,
+  {"CUSTOMER":"DME","TOTAL":"386718"}
+]
+```
+
+`GET /api/v1/engines/damage_per_flight`
+------------------------------
+**Show total damage per flight_id**
+
+`GET /api/v1/engines/ex50b/core_speed`
+------------------------------
+**Show fetch 100 top core speed for ex50b**
+
+`GET /api/v1/prosa/comercios`
+------------------------------
+**Show all commerce**
+
+`GET /api/v1/prosa/comercios/importe_promedio`
+------------------------------
+**Show average amount per commerce**
+
+`GET /api/v1/prosa/comercios/resumen`
+------------------------------
+**Show average amount & total amount per commerce**
+
+`GET /api/v1/prosa/topten/comercios_mas_ventas`
+------------------------------
+**Show top ten heavy commerce**
 
 ## Running the app on Bluemix
 
@@ -151,7 +209,7 @@ In the routes/index.js file, open the connection using the connection string and
 ```
 exports.listSysTables = function(ibmdb,connString) {
 	return function(req, res) {
-		   
+
 	   ibmdb.open(connString, function(err, conn) {
 			if (err ) {
 			 res.send("error occurred " + err.message);
@@ -159,14 +217,14 @@ exports.listSysTables = function(ibmdb,connString) {
 			else {
 				conn.query("SELECT FIRST_NAME, LAST_NAME, EMAIL, WORK_PHONE from GOSALESHR.employee FETCH FIRST 10 ROWS ONLY", function(err, tables, moreResultSets) {
 
-							
-				if ( !err ) { 
+
+				if ( !err ) {
 					res.render('tablelist', {
 						"tablelist" : tables
-						
+
 					 });
 
-					
+
 				} else {
 				   res.send("error occurred " + err.message);
 				}
@@ -181,7 +239,7 @@ exports.listSysTables = function(ibmdb,connString) {
 				});
 			}
 		} );
-	   
+
 	}
 }
 ```
