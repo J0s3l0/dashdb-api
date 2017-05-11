@@ -4,7 +4,7 @@
   },
   "name": "dashdbnodesample",
   "version": "0.0.1",
-  "description": "A sample node app for connecting to dashDB service on Bluemix",
+  "description": "Node app for connecting to dashDB service on Bluemix",
   "dependencies": {
     "cf-deployment-tracker-client": "0.0.8",
     "express": "3.5.x",
@@ -16,6 +16,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/IBM-Bluemix/dashdb-nodejs-helloworld"
+    "url": "https://github.com/J0s3l0/dashdb-api.git"
   }
 }
