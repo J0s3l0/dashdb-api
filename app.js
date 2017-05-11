@@ -20,11 +20,11 @@ var http = require('http');
 var path = require('path');
 var ibmdb = require('ibm_db');
 require('cf-deployment-tracker-client').track();
-
-var cors = require('cors')
+var queries = require('./queries');
+var cors = require('cors');
 var app = express();
 
-app.use(cors())
+app.use(cors());
 
 
 // all environments
@@ -70,12 +70,15 @@ if ( hasConnect == false ) {
 
 var connString = "DRIVER={DB2};DATABASE=" + db2.db + ";UID=" + db2.username + ";PWD=" + db2.password + ";HOSTNAME=" + db2.hostname + ";port=" + db2.port;
 
-//app.get('/', routes.listSysTables(ibmdb,connString));
+var query = "SELECT CUSTOMER, COUNT(*) AS TOTAL FROM DASH14467.BLADE_DAMAGE GROUP BY CUSTOMER";
 
-app.get('/', function (req, res, next) {
+app.get('/', routes.listSysTables(ibmdb,connString));
+app.get('/customers', routes.apicall(ibmdb,connString, queries.engines.customers));
+
+/*app.get('/', function (req, res, next) {
   res.json({msg: 'This is CORS-enabled for all origins!'})
 })
-
+*/
 
 app.get('/api/v1/engines/customers', function(req, res, next){
   ibmdb.open(connString, function(err, conn){
